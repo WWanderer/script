@@ -1,0 +1,15 @@
+#!/bin/sh
+
+screenW=$(xwininfo -root | grep -e "Width" | grep -Eo "[0-9]+")
+screenH=$(xwininfo -root | grep -e "Height" | grep -Eo "[0-9]+")
+
+windowW=$(xdotool getactivewindow getwindowgeometry --shell | grep -e "WIDTH" | grep -Eo "[0-9]+")
+windowH=$(xdotool getactivewindow getwindowgeometry --shell | grep -e "HEIGHT" | grep -Eo "[0-9]+")
+
+let "newX=(screenW - windowW) / 2 - 5" # 5 is the window border size; 10px in total as top+bottom border
+let "newY=(screenH - windowH) / 2 - 5"
+
+echo "windowW:" $windowW "windowH:" $windowH
+echo "x:" $newX "y:" $newY
+
+xdotool getactivewindow windowmove $newX $newY 
